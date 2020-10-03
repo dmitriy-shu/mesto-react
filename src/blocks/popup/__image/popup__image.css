@@ -1,0 +1,6 @@
+.popup__image {
+    width: 40px;
+    height: 40px;
+    background-image: url(../../../images/popup-close.svg);
+    background-size: cover;
+}
