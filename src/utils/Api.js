@@ -20,10 +20,15 @@ export class Api {
     }
 
     //метод запроса информации о пользователе с сервера
-    getUserInfo() {
-        return this._sendRequest(`/users/me`, {
-            headers: this.headers
-        })
+    async getUserInfo() {
+        try {
+            const result = await this._sendRequest(`/users/me`, {
+                headers: this.headers
+            })
+            return result
+        } catch (error) {
+            console.err(`Произошла ошибка: ${ error }`);
+        }
     }
 
     //метод отправки новой информации пользователя на сервер
@@ -48,11 +53,17 @@ export class Api {
     }
 
     //метод запроса на получение карточек с сервера
-    getCards() {
-        return this._sendRequest(`/cards`, {
-            method: 'GET',
-            headers: this.headers
-        })
+    async getCards() {
+        try {
+            const result = await this._sendRequest(`/cards`, {
+                method : 'GET',
+                headers: this.headers
+            })
+            return result
+        } catch (error) {
+            console.log(`Произошла ошибка: ${ error }`);
+        }
+
     }
 
     //метод отправки новой карточки на сервер
