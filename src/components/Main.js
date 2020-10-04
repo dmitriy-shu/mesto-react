@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import avatar from '../images/avatar.jpg';
-import { api } from '../utils/api.js';
+import React, { useEffect, useState } from 'react';
+import { api } from '../utils/Api.js';
 import Card from './Card.js'
+import Profile from './Profile.js'
 
 function Main(props) {
 
@@ -13,61 +13,44 @@ function Main(props) {
   } = props
 
   //данные пользователя (имя, о себе, аватар)
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState();
-
+  const [user, setUser] = useState({
+    name       : "Name",
+    description: "Description",
+    avatar     : null
+  })
   //создаем пустой массив для карточек
   const [cards, setCards] = useState([]);
 
   //запрашиваем данные пользователя с сервера
-  React.useEffect(() => {
-    api.getUserInfo()
-      .then((data) => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      });
-  }, []);
-
   //запрашиваем массив карточек с сервера
-  React.useEffect(() => {
-    api.getCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      });
+  useEffect(() => {
+    async function fetchData(){
+      const userInfo = await api.getUserInfo()
+      setUser(userInfo);
+
+      const fetchedCards = await api.getCards()
+      setCards(fetchedCards);
+    }
+    fetchData()
   }, []);
 
   //возврат разметки  страницы
   return (
     <main className="content">
-      <section className="profile">
-        <div className="profile__image">
-          <img className="profile__avatar" src={userAvatar || avatar} alt="аватар" />
-          <button onClick={onEditAvatar} className="profile__avatar-edit"></button>
-        </div>
-        <div className="profile__info">
-          <h1 className="profile__title">{userName}</h1>
-          <button onClick={onEditProfile} type="button" className="profile__edit-button"></button>
-          <p className="profile__subtitle">{userDescription}</p>
-        </div>
-        <button onClick={onAddPlace} type="button" className="profile__add-button"></button>
-      </section>
+      <Profile
+        user={ user }
+        onEditProfile={ onEditProfile }
+        onEditAvatar={ onEditAvatar }
+        onAddPlace={ onAddPlace }
+      />
       <section className="elements">
-        {cards.map((card) => (
+        { cards.map((card) => (
           <Card
-            key={card._id}
-            card={card}
-            onCardClick={onCardClick}
-          >
-          </Card>
-        ))}
+            key={ card._id }
+            card={ card }
+            onCardClick={ onCardClick }
+          />
+        )) }
       </section>
     </main>
   );
