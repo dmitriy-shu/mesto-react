@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import avatar from '../images/avatar.jpg';
-import { api } from '../utils/Api.js';
+import { api } from '../utils/api.js';
 import Card from './Card.js'
 
 function Main(props) {
@@ -13,8 +13,8 @@ function Main(props) {
   } = props
 
   //данные пользователя (имя, о себе, аватар)
-  const [userName, setUserName] = useState();
-  const [userDescription, setUserDescription] = useState();
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
   const [userAvatar, setUserAvatar] = useState();
 
   //создаем пустой массив для карточек
