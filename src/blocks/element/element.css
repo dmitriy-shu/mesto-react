@@ -6,6 +6,7 @@
 @import url(./__like/element__like.css);
 @import url(./__like/_active/element__like_active.css);
 @import url(./__like-counter/element__like-counter.css);
+@import url(./__delete/_active/element__delete_active.css);
 
 .element {
     width: 282px;

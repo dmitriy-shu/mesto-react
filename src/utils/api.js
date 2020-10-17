@@ -32,8 +32,8 @@ export class Api {
             method: 'PATCH',
             headers: this.headers,
             body: JSON.stringify({
-                name: newUserInfo.nameProfile,
-                about: newUserInfo.textProfile
+                name: newUserInfo.name,
+                about: newUserInfo.about
             })
         })
     }
@@ -67,29 +67,31 @@ export class Api {
         })
     }
 
-    //метод добавления лайка  
-    addLike(id) {
-        return this._sendRequest(`/cards/likes/${id}`, {
-            method: 'PUT',
-            headers: this.headers
-        })
-    }
-
-    //метод удаления лайка 
-    deleteLike(id) {
-        return this._sendRequest(`/cards/likes/${id}`, {
-            method: 'DELETE',
-            headers: this.headers
-        })
+    //метод добавляет или удаляет лайк
+    changeLikeCardStatus(id, isLiked) {
+        if (isLiked) {
+            return this._sendRequest(`/cards/likes/${id}`, {
+                method: 'PUT',
+                headers: this.headers
+            })
+        } else {
+            return this._sendRequest(`/cards/likes/${id}`, {
+                method: 'DELETE',
+                headers: this.headers
+            })
+        }
     }
 
     //метод удаления карточки
-    deleteCard(id) {
-        return this._sendRequest(`/cards/${id}`, {
-            method: 'DELETE',
-            headers: this.headers
-        })
+    deleteCard(id, isOwn) {
+        if (!isOwn) {
+            return this._sendRequest(`/cards/${id}`, {
+                method: 'DELETE',
+                headers: this.headers
+            })
+        }
     }
+
 }
 
 export const api = new Api(apiMyData);
